@@ -1,0 +1,19 @@
+#To export data from to excel, the lib -oenpyxl should be installed.
+#from openpyxl.workbook import Workbook
+#To export data from to multiple sheets of excel file, the lib -ExcelWriter should be installed.
+#from pandas import ExcelWriter
+import pandas
+
+df = pandas.read_excel("original/supermarkets.xlsx", sheet_name=0)
+df = df.set_index('ID')
+df_t = df.T
+df_t['7'] = ['Mantri Park', 'Mumbai', 'MH', 'India', 'Dmart', 50]
+df = df_t.T
+print(df)
+# Writing data frame to file. It will overwrite the file with data frame.
+df.to_excel("original/supermarkets2.xlsx", sheet_name='dataframe1')
+
+# Writing data in mutiple sheets or appened data in existing file.
+with pandas.ExcelWriter("original/supermarkets2.xlsx", mode='a') as writer:
+    df.to_excel(writer, sheet_name="dataframe2")
+    df.T.to_excel(writer, sheet_name="dataframe3")
