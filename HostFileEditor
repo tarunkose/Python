@@ -1,0 +1,31 @@
+# This script can be useful for editing the host file.
+# This script will append/remove the data based on the time interval.
+# You need to provide full path of host file in temp_path variable.
+
+import time
+from _datetime import datetime as dt
+temp_path = 'first.txt'
+redirect = '127.0.0.1'
+website_list = ['www.facebook.com', 'facebook.com']
+
+while True:
+    if dt(dt.now().year, dt.now().month, dt.now().day, 00, 11) < dt.now() \
+            < dt(dt.now().year, dt.now().month, dt.now().day, 1, 25):
+        with open(temp_path, 'r+') as file:
+            content = file.read()
+            for website in website_list:
+                if website in content:
+                    pass
+                else:
+                    file.write(redirect + ' ' + website + '\n')
+    else:
+        with open(temp_path, 'r+') as file:
+            content = file.readlines()
+            file.seek(0)
+            for line in content:
+                if not any(website in line for website in website_list):
+                    print(line)
+                    file.write(line)
+            file.truncate()
+            break
+    time.sleep(5)
